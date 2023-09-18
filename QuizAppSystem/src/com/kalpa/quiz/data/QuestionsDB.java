@@ -12,7 +12,7 @@ import com.kalpa.quiz.classes.Language;
 import com.kalpa.quiz.classes.Complexity;
 
 
-public class QuestionsDB 
+public class QuestionsDB implements IQuestions
 {
 	Map<QUnique, QFrame> q = new LinkedHashMap<>();
 

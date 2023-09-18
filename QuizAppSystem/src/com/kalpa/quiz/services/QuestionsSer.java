@@ -1,6 +1,8 @@
 package com.kalpa.quiz.services;
 
-import com.kalpa.quiz.data.QuestionsDB;
+import com.kalpa.quiz.data.IQuestions;
+import com.kalpa.quiz.data.IUser;
+import com.kalpa.quiz.data.QuestionsMySQL;
 import com.kalpa.quiz.data.ResultsDB;
 import com.kalpa.quiz.data.UserDB;
 import java.util.Map;
@@ -16,14 +18,14 @@ import com.kalpa.quiz.classes.Complexity;
 
 public class QuestionsSer 
 {
-	private QuestionsDB qdb;
+	private IQuestions qdb;
 	private ResultsDB rsdb;
-	private UserDB udb;
+	private IUser udb;
 	private UserSer us;
 	private Scanner scan;
 	private Language l;
 	private Complexity c;
-	public QuestionsSer(QuestionsDB qdb, ResultsDB rsdb, UserDB udb, UserSer us, Scanner scan) {
+	public QuestionsSer(IQuestions qdb, ResultsDB rsdb, IUser udb, UserSer us, Scanner scan) {
 		super();
 		this.qdb = qdb;
 		this.rsdb = rsdb;
@@ -44,7 +46,7 @@ public class QuestionsSer
 	
 	public void startQuestions()
 	{
-		Map<QUnique, QFrame> mq = (LinkedHashMap)qdb.getQ();
+		Map<QUnique, QFrame> mq = (LinkedHashMap)((QuestionsMySQL) qdb).getQ();
 		int qNum = 0;
 		int iSkp = 0;
 		int iCorr = 0;
@@ -95,8 +97,17 @@ public class QuestionsSer
 				rsdb.setTotQuesAttempted(qNum);
 			}
 		}
-		calScore();
-		displayResults();
+		if(qNum != 0)
+		{
+			calScore();
+			displayResults();
+		}
+		else
+		{
+			System.out.println("Sorry...No questions in Quiz App for "+
+					l.toString()+" language with "+c.toString()+
+					" complexity.Please revisit once the Organizer adds them.");
+		}
 	}
 	public void calScore()
 	{
@@ -120,7 +131,7 @@ public class QuestionsSer
 	{
 		for(int i=0; i<rsdb.getTotQuesAttempted(); i++)
 		{
-			Map<QUnique, QFrame> m = qdb.getQ();
+			Map<QUnique, QFrame> m = ((QuestionsMySQL) qdb).getQ();
 			QFrame e = m.get(new QUnique((i+1),l,c));
 			System.out.println((i+1)+". "+e.getQue()+"\n\t\tCorrect Ans :"+e.getAns()+"\n\t\tGiven Ans   :"+rsdb.getGvAns().get(i));
 		}

@@ -1,6 +1,7 @@
 package com.kalpa.quiz.services;
 
-import com.kalpa.quiz.data.RolesDB;
+import com.kalpa.quiz.data.IRoles;
+import com.kalpa.quiz.data.RolesMySQL;
 import com.kalpa.quiz.classes.Roles;
 import com.kalpa.quiz.classes.AdminOp;
 import com.kalpa.quiz.classes.OrganizerOp;
@@ -10,13 +11,13 @@ import java.util.ListIterator;
 
 public class RolesSer 
 {
-	private RolesDB rdb;
+	private IRoles rdb;
 	private Scanner scan;
 	private int rID;
 	private int oID;
 	public static final int MAX_ATTEMPTS = 3;
 	
-	public RolesSer(RolesDB rdb, Scanner scan) 
+	public RolesSer(IRoles rdb, Scanner scan) 
 	{
 		super();
 		this.rdb = rdb;
@@ -45,7 +46,7 @@ public class RolesSer
 		}
 		else
 		{
-			System.out.println(rdb.getRoles().get(rID - 1).getRole()+" entered into the system. Please validate your credentials.");
+			System.out.println(((RolesMySQL) rdb).getRoles().get(rID - 1).getRole()+" entered into the system. Please validate your credentials.");
 		}
 	}
 	
@@ -58,7 +59,7 @@ public class RolesSer
 			System.out.println("Please enter your selection : ");
 			int rID = Integer.parseInt(scan.next());
 			
-			if((rID >= 1) && (rID < rdb.getRoles().size()+1))
+			if((rID >= 1) && (rID < ((RolesMySQL) rdb).getRoles().size()+1))
 				return rID;
 			else
 				System.out.println("Please enter a selection from the list displayed.");
@@ -67,7 +68,7 @@ public class RolesSer
 	}
 	public void listRoles()
 	{
-		ListIterator<Roles> it = rdb.getRoles().listIterator();
+		ListIterator<Roles> it = ((RolesMySQL) rdb).getRoles().listIterator();
 		int i = 0;
 		while(it.hasNext())
 		{
@@ -78,7 +79,7 @@ public class RolesSer
 	}
 	public void chooseOp() 
 	{
-		String sRole = rdb.getRoles().get(rID - 1).getRole();
+		String sRole = ((RolesMySQL) rdb).getRoles().get(rID - 1).getRole();
 		oID = selectOp(sRole);
 		if(oID == -1)
 		{
@@ -102,13 +103,13 @@ public class RolesSer
 			int oID = Integer.parseInt(scan.next());
 			switch(role)
 			{
-			case "Admin":if((oID >= 1) && (oID < rdb.getAdmOp().size()+1))
+			case "Admin":if((oID >= 1) && (oID < ((RolesMySQL) rdb).getAdmOp().size()+1))
 							return oID;
 							break;
-			case "Organizer":if((oID >= 1) && (oID < rdb.getOrgOp().size()+1))
+			case "Organizer":if((oID >= 1) && (oID < ((RolesMySQL) rdb).getOrgOp().size()+1))
 							return oID;
 							break;
-			case "Player":if((oID >= 1) && (oID < rdb.getPlyOp().size()+1))
+			case "Player":if((oID >= 1) && (oID < ((RolesMySQL) rdb).getPlyOp().size()+1))
 							return oID;
 							break;
 			default:System.out.println("Please enter a selection from the list displayed.");
@@ -146,17 +147,17 @@ public class RolesSer
 	{
 		switch(sRole)
 		{
-			case "Admin":System.out.println(rdb.getAdmOp().get(oID - 1).getRole()
+			case "Admin":System.out.println(((RolesMySQL) rdb).getAdmOp().get(oID - 1).getRole()
 					+".....");
-			executeAdminOp(rdb.getAdmOp().get(oID-1).getId(),rs, us, qs);
+			executeAdminOp(((RolesMySQL) rdb).getAdmOp().get(oID-1).getId(),rs, us, qs);
 			break;
-			case "Organizer":System.out.println(rdb.getOrgOp().get(oID - 1).getRole()
+			case "Organizer":System.out.println(((RolesMySQL) rdb).getOrgOp().get(oID - 1).getRole()
 					+".....");
-			executeOrganizerOp(rdb.getOrgOp().get(oID-1).getId(),rs, us, qs);
+			executeOrganizerOp(((RolesMySQL) rdb).getOrgOp().get(oID-1).getId(),rs, us, qs);
 			break;
-			case "Player":System.out.println(rdb.getPlyOp().get(oID - 1).getRole()
+			case "Player":System.out.println(((RolesMySQL) rdb).getPlyOp().get(oID - 1).getRole()
 					+".....");
-			executePlayerOp(rdb.getPlyOp().get(oID-1).getId(),rs, us, qs);
+			executePlayerOp(((RolesMySQL) rdb).getPlyOp().get(oID-1).getId(),rs, us, qs);
 			break;
 		}
 	}

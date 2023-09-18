@@ -4,11 +4,13 @@ import java.util.ListIterator;
 import java.util.Scanner;
 
 import com.kalpa.quiz.classes.Users;
+import com.kalpa.quiz.data.IUser;
 import com.kalpa.quiz.data.UserDB;
+import com.kalpa.quiz.data.UserMySQL;
 
 public class UserSer 
 {
-	private UserDB udb;
+	private IUser udb;
 	private Scanner scan;
 	private String usrName;
 	public static final int MAX_TRIES = 3;
@@ -21,14 +23,14 @@ public class UserSer
 		this.usrName = usrName;
 	}
 
-	public UserSer(UserDB udb, Scanner scan) 
+	public UserSer(IUser udb, Scanner scan) 
 	{
 		super();
 		this.udb = udb;
 		this.scan = scan;
 	}
 
-	public void login(UserDB udb, String role)
+	public void login(IUser udb, String role)
 	{
 		String uName;
 		String uPwd;
@@ -58,7 +60,7 @@ public class UserSer
 	
 	public int validateUser(String role, String uName, String uPwd)
 	{
-		ListIterator<Users> it = udb.getUsers().listIterator();
+		ListIterator<Users> it = ((UserMySQL) udb).getUsers().listIterator();
 		int i = 0;
 		while(it.hasNext())
 		{

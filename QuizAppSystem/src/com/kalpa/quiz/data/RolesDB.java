@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.kalpa.quiz.classes.Roles;
 
-public class RolesDB 
+public class RolesDB implements IRoles
 {
 	private List<Roles> roles= new ArrayList<Roles>();
 	private List<Roles> admOp= new ArrayList<Roles>();
@@ -16,7 +16,7 @@ public class RolesDB
 	{
 		super();
 	}
-
+	@Override
 	public void loadRoles()
 	{
 		System.out.println("Loading all roles from RolesDB.....");
