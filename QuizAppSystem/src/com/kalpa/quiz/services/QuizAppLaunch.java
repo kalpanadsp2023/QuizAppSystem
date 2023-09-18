@@ -59,8 +59,14 @@ public class QuizAppLaunch
 		
 		us.login(udb, rSelected);
 		System.out.println("------------------------------------------------------------------------------------");
-		rs.chooseOp();
-		rs.executeOp(rSelected, rs, us, qs);
+		String ch = "Y";
+		do 
+		{
+			rs.chooseOp();
+			rs.executeOp(rSelected, rs, us, qs);
+			System.out.println("Do you want to continue : Y/N?");
+			ch = scan.next();
+		}while(ch.equals("Y") || ch.equals("y"));
 	}
 	
 	public void welcomeMsg()
