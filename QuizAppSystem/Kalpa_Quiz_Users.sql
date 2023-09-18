@@ -1,7 +1,3 @@
-CREATE DATABASE Kalpa_Quiz;
-
-USE Kalpa_Quiz;
-
 CREATE TABLE Users
 (u_id INT PRIMARY KEY AUTO_INCREMENT,
 u_role VARCHAR(15),
